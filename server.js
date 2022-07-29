@@ -10,10 +10,11 @@ app.use(express.static('wap'));
 
 dotenv.config();
 
-var PORT = process.env.port || 3000
+let PORT = process.env.PORT || 3000
 
 const pool = new pg.Pool({
-        connectionString: process.env.DATABASE_URL
+        connectionString: process.env.DATABASE_URL,
+        ssl: process.env.NODE_ENV === "production" ? {rejectUnauthorized: false} : false
 });
 
 app.get("/aircrafts",(req,res)=>{
@@ -28,6 +29,6 @@ app.use((err, req, res, next) => {
   });
 
 
-app.listen(`${PORT}`, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log(`MAKE IT DROP`);
   });

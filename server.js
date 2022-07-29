@@ -17,11 +17,13 @@ const pool = new pg.Pool({
         ssl: process.env.NODE_ENV === "production" ? {rejectUnauthorized: false} : false
 });
 
-app.get("/aircrafts",(req,res)=>{
-    pool.query(`SELECT * FROM aircrafts`).then((data) => {
+app.get("/aircrafts", async(req,res)=>{
+    await pool.query(`SELECT * FROM aircrafts`).then((data) => {
+        try{
         console.log(`thow it in a circle`);
         res.send(data.rows);
-    });
+    } catch (err){ console.log(err)}
+    })
 });
 
 app.use((err, req, res, next) => {
